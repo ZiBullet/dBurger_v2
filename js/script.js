@@ -56,9 +56,7 @@ const extraProduct = {
 }
 
 const cards = document.querySelectorAll('.main__product')
-cardBtns = document.querySelectorAll('.main__product-btn'),
-    productSums = document.querySelectorAll('.main__product-price span'),
-    productsKal = document.querySelectorAll('.main__product-call span');
+cardBtns = document.querySelectorAll('.main__product-btn');
 
 for (let i = 0; i < productList.length; i++) {
     productList[i].nickname = cards[i].id;
@@ -83,27 +81,39 @@ function plusOrMinus(btn) {
                 product.amount--;
             }
         }
+        displayResult(product, parent);
     })
-
-    displayResult();
 }
 
-function displayResult() {
-    const productsArr = [];
+function displayResult(product, card) {
+    let cardNum = card.querySelector('.main__product-num'),
+        cardSumma = card.querySelector('.main__product-price'),
+        cardCheckboxes = card.querySelectorAll('.main__product-checkbox'),
+        cardKkal = card.querySelector('.main__product-call span');
 
-    productList.forEach((product, i) => {
-        const productCard = document.querySelector(`#${product.nickname}`),
-            productCounter = productCard.querySelector('.main__product-num');
+        product.totalSumma = product.Summa;
+        product.totalKkal = product.Kkal;
 
-        if (product.amount) {
-            productsArr.push(product);
-            productCounter.innerHTML = product.amount;
-        } else productCounter.innerHTML = 0;
+    if (product.amount) {
+        cardCheckboxes.forEach(checkbox => {
+            let attr = checkbox.getAttribute('data-extra');
+            for (const key in extraProduct) {
+                if (checkbox.checked && attr == key) {
+                    product.totalSumma += extraProduct[key].price;
+                    product.totalKkal += extraProduct[key].kkal;
+                }
+            }
+            checkbox.onclick = () => {
+                displayResult(product, card);
+            }
+        })
+    }
 
-        productSums[i].innerHTML = product.Summa.toLocaleString();
-        productsKal[i].innerHTML = product.Kkal.toLocaleString();
 
-    })
+    cardSumma.innerHTML = product.totalSumma.toLocaleString() + ' сум';
+    cardKkal.innerHTML = product.totalKkal.toLocaleString();
+
+    cardNum.innerHTML = product.amount;
 
 
 }
