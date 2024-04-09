@@ -55,8 +55,13 @@ const extraProduct = {
     }
 }
 
-const cards = document.querySelectorAll('.main__product')
-cardBtns = document.querySelectorAll('.main__product-btn');
+const cards = document.querySelectorAll('.main__product'),
+    cardBtns = document.querySelectorAll('.main__product-btn'),
+    addCart = document.querySelector('.addCart'),
+    receipt = document.querySelector('.receipt'),
+    windowOut = document.querySelector('.receipt__window-out'),
+    windowTotalPrice = document.querySelector('.receipt__window-total-price'),
+    windowBtn = document.querySelector('.receipt__window-btn');
 
 for (let i = 0; i < productList.length; i++) {
     productList[i].nickname = cards[i].id;
@@ -91,8 +96,8 @@ function displayResult(product, card) {
         cardCheckboxes = card.querySelectorAll('.main__product-checkbox'),
         cardKkal = card.querySelector('.main__product-call span');
 
-        product.totalSumma = product.Summa;
-        product.totalKkal = product.Kkal;
+    product.totalSumma = product.Summa;
+    product.totalKkal = product.Kkal;
 
     if (product.amount) {
         cardCheckboxes.forEach(checkbox => {
@@ -117,3 +122,34 @@ function displayResult(product, card) {
 
 
 }
+
+addCart.onclick = () => {
+    receipt.classList.add('active');
+    displayCartResult();
+};
+
+function displayCartResult() {
+    let totalPrice = 0;
+    productList.forEach(product => {
+        if (!product.amount) return;
+        windowOut.innerHTML += genProductInList(product);
+        totalPrice += product.totalSumma;
+    })
+    windowTotalPrice.innerHTML = totalPrice + ' сум';
+}
+
+function genProductInList(product) {
+    let {name: productName, amount, totalSumma} = product
+    return `
+    <div class="receipt__window-product">
+        <h4 class="receipt__window-product-title">${productName}</h4>
+        <div class="receipt__window-product-details">
+            <span class="receipt__window-product-amount">${amount}</span>
+            <span class="receipt__window-product-price">${totalSumma.toLocaleString()}</span>
+        </div>
+    </div>
+    `
+}
+
+
+windowBtn.onclick = () => location.reload();
