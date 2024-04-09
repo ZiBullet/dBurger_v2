@@ -61,7 +61,8 @@ const cards = document.querySelectorAll('.main__product'),
     receipt = document.querySelector('.receipt'),
     windowOut = document.querySelector('.receipt__window-out'),
     windowTotalPrice = document.querySelector('.receipt__window-total-price'),
-    windowBtn = document.querySelector('.receipt__window-btn');
+    windowBtn = document.querySelector('.receipt__window-btn'),
+    message = document.querySelector('.message');
 
 for (let i = 0; i < productList.length; i++) {
     productList[i].nickname = cards[i].id;
@@ -124,8 +125,17 @@ function displayResult(product, card) {
 }
 
 addCart.onclick = () => {
-    receipt.classList.add('active');
-    displayCartResult();
+    let exist = [];
+    productList.forEach(product => {
+        if (product.amount) exist.push('exist');
+    })
+    if (exist.length) {
+        displayCartResult()
+        receipt.classList.add('active');
+    } else {
+        message.style.top = '15px';
+        setTimeout(() => message.style.top = '-100%', 3000);
+    }
 };
 
 function displayCartResult() {
@@ -135,11 +145,11 @@ function displayCartResult() {
         windowOut.innerHTML += genProductInList(product);
         totalPrice += product.totalSumma;
     })
-    windowTotalPrice.innerHTML = totalPrice + ' сум';
+    windowTotalPrice.innerHTML = totalPrice.toLocaleString() + ' сум';
 }
 
 function genProductInList(product) {
-    let {name: productName, amount, totalSumma} = product
+    let { name: productName, amount, totalSumma } = product
     return `
     <div class="receipt__window-product">
         <h4 class="receipt__window-product-title">${productName}</h4>

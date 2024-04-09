@@ -323,7 +323,7 @@ a {
 
 .receipt.active .receipt__window {
     width: 30%;
-    min-height: 50%;
+    min-height: 30%;
     background: #fff;
     border-radius: 6px;
     display: flex;
@@ -331,7 +331,7 @@ a {
     align-items: center;
     transition: 0.5s;
     z-index: 10000;
-    top: 50%;
+    bottom: 5px;
     left: 50%;
     transform: translateX(-50%);
     position: absolute;
@@ -376,10 +376,35 @@ a {
     margin: 10px 0;
 }
 
+.message {
+    position: fixed;
+    top: -100%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: clamp(1rem, 0.955rem + 0.23vw, 1.125rem);
+    text-align: center;
+    transition: .3s;
+    background: #fff;
+    max-width: 1200px;
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 15px;
+    border-radius: 5px;
+    border: 1px solid #dd0404;
 
+}
 @media (max-width: 1400px) {
     .main {
         width: 95%;
+    }
+    
+}
+
+@media (max-width: 1200px) {
+    .receipt.active .receipt__window {
+        width: 40%;
     }
 }
 
@@ -400,11 +425,17 @@ a {
     .main {
         width: 80%;
     }
+    .receipt.active .receipt__window {
+        width: 60%;
+    }
 }
 
 @media (max-width: 500px) {
 
     .main {
         width: 95%;
+    }
+    .receipt.active .receipt__window {
+        width: 90%;
     }
 }
